@@ -12,6 +12,13 @@ url:str = os.getenv('SUPABASE_URL')
 key:str = os.getenv('SUPABASE_KEY')
 supabase: Client = create_client(url, key)
 
+#######################################
+###  /recipes GETメソッド            ###
+###  全レシピ一覧を返す               ###
+########################################
+###  パラメータ：なし                 ###
+###  response: {recipes:[Data Json]} ###
+########################################
 @app.get("/recipes",status_code=200)
 def recipes(response:Response):
     
@@ -32,6 +39,14 @@ def recipes(response:Response):
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"message":"database error"}
 
+##################################################
+###  /recipes/{id} GETメソッド                  ###
+###  指定レシピ一つを返す                        ###
+#################################################
+###  パラメータ：id: int                        ###
+###  response: {message:"Recipe details by id",###
+###             recipes:[Data Json]}           ###
+##################################################
 @app.get("/recipes/{id}",status_code=200)
 def recipes_id(id:int,response:Response):
     try:
@@ -46,12 +61,23 @@ def recipes_id(id:int,response:Response):
             
             recipes.data_set(res.data)
             
-            return recipes.data
+            return {
+                "message":"Recipe details by id",
+                "recipe":[recipes.data]
+            }
         
     except:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"message":"database error"}
 
+##########################################################
+###  /recipes/ POSTメソッド                             ###
+###  レシピを作成                                       ###
+##########################################################
+###  パラメータ：body:Recipe_Body                       ###
+###  response: {message:"Recipe successfully created!",###
+###             recipes:[Data Json]}                   ###
+##########################################################
 @app.post("/recipes",status_code=200)
 def recipe_post(body:Recipe_Body,response:Response):
     
@@ -69,6 +95,14 @@ def recipe_post(body:Recipe_Body,response:Response):
             "required": "title, making_time, serves, ingredients, cost"
         }
         
+##########################################################
+###  /recipes/{id} PATCHメソッド                        ###
+###  指定レシピを更新                                    ###
+##########################################################
+###  パラメータ：id:int , body:Recipe_Body              ###
+###  response: {message:"Recipe successfully updated!",###
+###             recipes:[Data Json]}                   ###
+##########################################################
 @app.patch("/recipes/{id}",status_code=200)
 def recipe_patch(id:int,body:Recipe_Body,response:Response):
     
@@ -86,7 +120,15 @@ def recipe_patch(id:int,body:Recipe_Body,response:Response):
         return {
             "message": "Recipe update failed!"
         }
-        
+
+##########################################################
+###  /recipes/{id} DELETEメソッド                       ###
+###  指定レシピを削除                                    ###
+##########################################################
+###  パラメータ：id:int                                 ###
+###  response: {message:"Recipe successfully removed!",###
+###             recipes:[Data Json]}                   ###
+##########################################################
 @app.delete("/recipes/{id}",status_code=200)
 def recipe_patch(id:int,response:Response):
     
