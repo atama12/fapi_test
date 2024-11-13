@@ -61,10 +61,7 @@ def recipes_id(id:int,response:Response):
             
             recipes.data_set(res.data)
             
-            return {
-                "message":"Recipe details by id",
-                "recipe":[recipes.data]
-            }
+            return recipes.data
         
     except:
         response.status_code = status.HTTP_404_NOT_FOUND
