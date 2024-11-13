@@ -1,0 +1,4 @@
+supabase
+fastapi
+python-dotenv
+typing
