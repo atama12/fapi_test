@@ -63,7 +63,7 @@ def recipe_post(body:Recipe_Body,response:Response):
              "recipe": [{"id":res.data[0]["id"],"title":body.title,"making_time":body.making_time,"serves":body.serves,"ingredients":body.ingredients,"cost":str(body.cost),"created_at":body.created_at,"updated_at":body.updated_at}]
         }
     except:
-        response.status_code = status.HTTP_404_NOT_FOUND
+        response.status_code = status.HTTP_200_OK
         return {
             "message": "Recipe creation failed!",
             "required": "title, making_time, serves, ingredients, cost"
