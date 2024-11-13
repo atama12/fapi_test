@@ -2,3 +2,4 @@ supabase
 fastapi
 python-dotenv
 typing
+uvicorn
